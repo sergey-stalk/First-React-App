@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 
+
+
 class Article extends Component {
 	constructor (props){
 		super(props)
@@ -11,12 +13,22 @@ class Article extends Component {
 		this.handleClick = handleClick.bind(this)
 	}
 
+	/*shouldComponentUpdate (nextProps, nextState) {
+		return this.state.isOpen !== nextState.isOpen
+	}*/
+
 	componentWillMount() {
 		console.log('---', 'mounting')
 	}
 
 	componentWillReceiveProps(nextProps) {
-		
+		if (nextProps.defaultOpen !== this.props.defaultOpen) this.setState({
+			isOpen: nextProps.defaultOpen
+		})
+	}
+
+	componentWillUpdate () {
+		console.log('---', 'will Update')
 	}
 	render () {
 		const style = {width: '50%'}
@@ -30,7 +42,7 @@ class Article extends Component {
 						<button className='btn btn-primary btn-lg float-right' onClick={this.handleClick}>{this.state.isOpen ? 'close' : 'open'}</button>
 					</h2>
 				</div>
-				<div className='card-body'>	
+				<div className='card-body'>
 					{body}
 					<h6 className='card-subtitle text-muted'>
 						creation date: {(new Date(article.date).toDateString())}
